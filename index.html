@@ -4,35 +4,146 @@
   <title>Poke and PlaceHolder Lists</title>
 </head>
 <body>
-  <style type="text/css"></style>
+  <style type="text/css">
+    * {
+      font-family: "arial";
+      color: var(--main-txt-color);
+    }
+    :root {
+      --main-shadow-color: #e3e3ed;
+      --main-txt-color: #040626;
+    }
+    h1 {
+      text-align: center;
+    }
+    .list-container {
+      display: flex;
+      justify-content: space-around;
+    }
+
+    #list-one, #list-two {
+      box-shadow: 0 4px 8px 0 var(--main-shadow-color);
+    }
+
+    #list-two > .list-item-container {
+      max-width: 90px;
+      display: inline-block;
+    }
+
+    #list-one > .list-item-container {
+      min-width: 500px;
+      padding: 25px;
+
+    }
+
+    #list-two > .list-item-container > .list-item-title {
+      text-align: center;
+    }
+
+    .list-title {
+      text-align: center;
+    }
+
+    .list-item-container {
+      box-shadow: 0 4px 8px 0 var(--main-shadow-color);
+      padding: 10px;
+      max-width: 500px;
+    }
+
+    .list-item-title {
+      font-size: 15px;
+      font-weight: 800;
+      margin-bottom: 5px;
+      text-transform: capitalize;
+    }
+
+    .list-item-body {
+      margin: 0;
+    }
+  </style>
   <div class='lists-container'>
-    <h1>Lists</h1>
+    <h1 clas='main-title'>Blog Posts and Pokemon</h1>
+    <section class='list-container'>
+      <section id="list-one">
+        <h2 class="list-title">Blog Posts</h2>
+      </section>
+      <section id="list-two">
+        <h2 class="list-title">Pokemon</h2>
+      </section>
+    </section>
   </div>
   <script type="text/javascript">
     //define api urls
-    const postURl = 'https://jsonplaceholder.typicode.com/posts?_limit=5'
-    const pokeURL = 'https://pokeapi.co/api/v2/pokemon?limit=10'
+    const postURl = 'https://jsonplaceholder.typicode.com/posts?_limit=10'
+    const pokeURL = 'https://pokeapi.co/api/v2/pokemon?limit=50'
 
     //fetch promise objects from apis
-    let postsData = fetch(postURl)
-    let pokeData = fetch(pokeURL)
+    const postsData = fetch(postURl)
+    const pokeData = fetch(pokeURL)
 
     //give browser access to promise object data
     Promise.all([postsData, pokeData])
       .then( data => {
         //convert to json on promise objects
         data.forEach( content => {
-          //pass to another function
+          //pass to another function to do work with json data
           processData(content.json())
         })
       })
       .catch( err => {})
 
-      let processData = (promise) => {
+
+
+      const processData = (promise) => {
         //when we have the json data do somethign with it
         promise.then( data => {
-          //put data on html markup
-          console.log('data', data)
+          let listOneHoler = document.getElementById('list-one');
+          let listTwoHoler = document.getElementById('list-two');
+          if (data.results) {
+            const pokemonData = data.results;
+            pokemonData.forEach(dataObj => {
+              fetch(dataObj.url)
+                .then(res => res.json())
+                .then(data => {
+                  console.log(data);
+                  let article = document.createElement('article');
+                  let name = document.createElement('h2');
+                  let img = document.createElement('img');
+                  img.src = data.sprites.front_default
+                  img.alt = data.species.name
+
+                  article.className = 'list-item-container';
+                  name.className = 'list-item-title';
+                  img.className = 'list-item-img';
+                  name.innerHTML = data.species.name;
+
+                  article.appendChild(name);
+                  article.appendChild(img);
+
+                  listTwoHoler.appendChild(article);
+                })
+            })
+          } else {
+            const postData = data;
+            //create list from our data
+            postData.forEach(dataObj => {
+
+              let article = document.createElement('article');
+              let title = document.createElement('h2');
+              let copy = document.createElement('p');
+
+              article.className = 'list-item-container';
+              title.className = 'list-item-title';
+              copy.className = 'list-item-body';
+              copy.innerHTML = dataObj.body;
+              title.innerHTML = dataObj.title;
+
+              article.appendChild(title);
+              article.appendChild(copy);
+
+              listOneHoler.appendChild(article);
+            })
+          }
         })
       }
   </script>
