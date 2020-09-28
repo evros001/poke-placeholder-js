@@ -12,6 +12,7 @@
     :root {
       --main-shadow-color: #e3e3ed;
       --main-txt-color: #040626;
+      --main-body-txt-color: #818195;
     }
     h1 {
       text-align: center;
@@ -21,19 +22,30 @@
       justify-content: space-around;
     }
 
+    #list-one {
+      padding: 20px 60px 20px 20px;
+      border-right: 2px solid var(--main-shadow-color);
+    }
+
+    #list-two {
+      padding: 20px;
+    }
+
     #list-one, #list-two {
-      box-shadow: 0 4px 8px 0 var(--main-shadow-color);
+      margin: 10px 20px 10px 10px;
+      /*box-shadow: 4px 4px 8px 4px var(--main-shadow-color);*/
     }
 
     #list-two > .list-item-container {
       max-width: 90px;
       display: inline-block;
+      margin: 15px 10px;
     }
 
     #list-one > .list-item-container {
       min-width: 500px;
       padding: 25px;
-
+      margin: 15px 0;
     }
 
     #list-two > .list-item-container > .list-item-title {
@@ -45,7 +57,7 @@
     }
 
     .list-item-container {
-      box-shadow: 0 4px 8px 0 var(--main-shadow-color);
+      box-shadow: 4px 4px 8px 4px var(--main-shadow-color);
       padding: 10px;
       max-width: 500px;
     }
@@ -59,8 +71,10 @@
 
     .list-item-body {
       margin: 0;
+      color: var(--main-body-txt-color);
     }
   </style>
+
   <div class='lists-container'>
     <h1 clas='main-title'>Blog Posts and Pokemon</h1>
     <section class='list-container'>
@@ -72,6 +86,7 @@
       </section>
     </section>
   </div>
+
   <script type="text/javascript">
     //define api urls
     const postURl = 'https://jsonplaceholder.typicode.com/posts?_limit=10'
