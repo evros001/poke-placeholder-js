@@ -117,6 +117,7 @@
           if (data.results) {
             const pokemonData = data.results;
             pokemonData.forEach(dataObj => {
+              //need to make another call beacsue we only have a url pointing to detailed data
               fetch(dataObj.url)
                 .then(res => res.json())
                 .then(data => {
